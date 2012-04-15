@@ -10,6 +10,7 @@
     <Grid Background="{StaticResource ApplicationPageBackgroundBrush}">
         <StackPanel>
             <Button Content="Set tile - Text" Click="SetTileTextButtonClick" />
+            <Button Content="Set tile - Local Image" Click="SetTileImageButtonClick" />
         </StackPanel>
     </Grid>
 </Page>

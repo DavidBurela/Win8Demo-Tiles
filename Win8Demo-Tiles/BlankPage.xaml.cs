@@ -1,4 +1,5 @@
-﻿using Windows.UI.Notifications;
+﻿using Windows.Data.Xml.Dom;
+using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -31,6 +32,39 @@ namespace Win8Demo_Tiles
             tileAttributes[0].AppendChild(tileXml.CreateTextNode("Hi :-)"));
 
             // Create a TileNotification from our XML, and send it to the Tile update manager
+            var tileNotification = new TileNotification(tileXml);
+            TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
+        }
+
+        /// <summary>
+        /// Set the application's tile to display a local image file.
+        /// After clicking, go back to the start screen to watch your application's tile update.
+        /// </summary>
+        private void SetTileImageButtonClick(object sender, RoutedEventArgs e)
+        {
+            // It is possible to start from an existing template and modify what is needed.
+            // Alternatively you can construct the XML from scratch.
+            var tileXml = new XmlDocument();
+            var title = tileXml.CreateElement("title");
+            var visual = tileXml.CreateElement("visual");
+            visual.SetAttribute("version", "1");
+            visual.SetAttribute("lang", "en-US");
+
+            // The template is set to be a TileSquareImage. This tells the tile update manager what to expect next.
+            var binding = tileXml.CreateElement("binding");
+            binding.SetAttribute("template", "TileSquareImage");
+            // An image element is then created under the TileSquareImage XML node. The path to the image is specified
+            var image = tileXml.CreateElement("image");
+            image.SetAttribute("id", "1");
+            image.SetAttribute("src", @"ms-appx:///Assets/DemoImage.png");
+
+            // All the XML elements are chained up together.
+            title.AppendChild(visual);
+            visual.AppendChild(binding);
+            binding.AppendChild(image);
+            tileXml.AppendChild(title);
+
+            // The XML is used to create a new TileNotification which is then sent to the TileUpdateManager
             var tileNotification = new TileNotification(tileXml);
             TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
         }
