@@ -28,8 +28,8 @@ namespace Win8Demo_Tiles
             var tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileSquareText01);
 
             // Find the 'text' element in the template's XML, and insert the text "Hi :-)" into it.
-            var tileAttributes = tileXml.GetElementsByTagName("text");
-            tileAttributes[0].AppendChild(tileXml.CreateTextNode("Hi :-)"));
+            var elements = tileXml.GetElementsByTagName("text");
+            elements[0].AppendChild(tileXml.CreateTextNode("Hi :-)"));
 
             // Create a TileNotification from our XML, and send it to the Tile update manager
             var tileNotification = new TileNotification(tileXml);
@@ -65,6 +65,24 @@ namespace Win8Demo_Tiles
             tileXml.AppendChild(title);
 
             // The XML is used to create a new TileNotification which is then sent to the TileUpdateManager
+            var tileNotification = new TileNotification(tileXml);
+            TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
+        }
+
+        /// <summary>
+        /// Set the application's tile to display a remote image on the internet.
+        /// After clicking, go back to the start screen to watch your application's tile update.
+        /// </summary>
+        private void SetTileRemoteImageButtonClick(object sender, RoutedEventArgs e)
+        {
+            var tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileSquareImage);
+
+            // Find the 'image' element in the template's XML. Change the src attribute to a remote URL
+            var elements = tileXml.GetElementsByTagName("image");
+            var imageElement = elements[0] as XmlElement;
+            imageElement.SetAttribute("src", @"http://i.microsoft.com/global/en-us/homepage/PublishingImages/sprites/microsoft.png");
+
+            // Create a TileNotification from our XML, and send it to the Tile update manager
             var tileNotification = new TileNotification(tileXml);
             TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
         }

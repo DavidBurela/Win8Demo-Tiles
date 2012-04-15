@@ -11,6 +11,7 @@
         <StackPanel>
             <Button Content="Set tile - Text" Click="SetTileTextButtonClick" />
             <Button Content="Set tile - Local Image" Click="SetTileImageButtonClick" />
+            <Button Content="Set tile - Remote Image" Click="SetTileRemoteImageButtonClick" />
         </StackPanel>
     </Grid>
 </Page>
