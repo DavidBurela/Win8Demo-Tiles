@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Win8Demo_Tiles
 {
@@ -27,12 +16,23 @@ namespace Win8Demo_Tiles
         }
 
         /// <summary>
-        /// Invoked when this page is about to be displayed in a Frame.
+        /// Set the application's tile to display text content.
+        /// After clicking, go back to the start screen to watch your application's tile update.
         /// </summary>
-        /// <param name="e">Event data that describes how this page was reached.  The Parameter
-        /// property is typically used to configure the page.</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        private void SetTileTextButtonClick(object sender, RoutedEventArgs e)
         {
+            // Tiles use a predefined set of standard templates to display their content.
+            // The updates happen by sending a XML fragment to the Tile update manager.
+            // To make things easier, we will get the template for a square tile with text as a base, and modify it from there
+            var tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileSquareText01);
+
+            // Find the 'text' element in the template's XML, and insert the text "Hi :-)" into it.
+            var tileAttributes = tileXml.GetElementsByTagName("text");
+            tileAttributes[0].AppendChild(tileXml.CreateTextNode("Hi :-)"));
+
+            // Create a TileNotification from our XML, and send it to the Tile update manager
+            var tileNotification = new TileNotification(tileXml);
+            TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
         }
     }
 }

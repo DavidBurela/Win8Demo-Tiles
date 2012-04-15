@@ -8,6 +8,8 @@
     mc:Ignorable="d">
 
     <Grid Background="{StaticResource ApplicationPageBackgroundBrush}">
-
+        <StackPanel>
+            <Button Content="Set tile - Text" Click="SetTileTextButtonClick" />
+        </StackPanel>
     </Grid>
 </Page>
